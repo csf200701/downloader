@@ -15,27 +15,33 @@ type BarContainer struct {
 	nextLine int
 	maxLine  int
 	width    int
+	minLine  int
 }
 
 func New(title string) *BarContainer {
 	if !term.IsInit {
 		term.Init()
-		term.SetCursor(0, 0)
 	}
-	fmt.Printf(title)
-	b := &BarContainer{nextLine: 0, title: title}
+	// _, minLine, _ := termWidth()
+	minLine := 0
+	term.SetCursor(0, minLine)
+	term.SetOutputMode(term.Output256)
+	fmt.Printf("\r" + title)
+	b := &BarContainer{nextLine: 0, title: title, minLine: minLine}
 	b.setWidth()
 	go func() {
 		for {
 			e := term.PollEvent()
-			if e.Key == term.KeyCtrlC {
+			if e.Key == term.KeyCtrlC || e.Type == term.EventInterrupt || e.Type == term.EventError {
 				b.Lock()
 				defer b.Unlock()
+				//term.Close()
+				term.Flush()
 				os.Exit(0)
-				term.SetCursor(0, 0)
+				term.SetCursor(0, minLine)
 			} else if e.Type == term.EventResize {
 				b.setWidth()
-				term.SetCursor(0, 0)
+				term.SetCursor(0, minLine)
 				fmt.Printf(title)
 			}
 		}

@@ -2,7 +2,9 @@ package downloader
 
 import (
 	"downloader/bar"
+	"downloader/config"
 	"downloader/utils"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -26,17 +28,42 @@ type MergeFile struct {
 	status    int //1正常 2异常
 }
 
-func NewUrl(url string, process int) *Downloader {
+func NewUrl(url string, process int) (*Downloader, error) {
+	if len(url) == 0 {
+		return nil, errors.New("URL地址不能为空")
+	}
 	req := utils.NewRequest(url)
 	return &Downloader{
 		url:     url,
 		process: process,
 		req:     req,
-	}
+	}, nil
 }
 
-func NewComponent(componentName string, componentVersion string, process int) *Downloader {
+func NewComponent(componentName string, componentVersion string, process int) (*Downloader, error) {
+	if len(componentName) == 0 {
+		return nil, errors.New("组件不能为空")
+	}
 	var url string
+	c := config.C
+	for _, component := range c.Components {
+		if component.Name == componentName {
+			if len(componentVersion) > 0 {
+				for _, version := range component.Versions {
+					if version.Name == componentVersion {
+						url = version.Url
+						break
+					}
+				}
+			} else {
+				url = component.Versions[0].Url
+			}
+			break
+		}
+	}
+	if len(url) == 0 {
+		return nil, errors.New("获取不到组件所对应的URL地址")
+	}
 	req := utils.NewRequest(url)
 	return &Downloader{
 		url:              url,
@@ -44,7 +71,7 @@ func NewComponent(componentName string, componentVersion string, process int) *D
 		componentVersion: componentVersion,
 		process:          process,
 		req:              req,
-	}
+	}, nil
 }
 
 func (d *Downloader) Download() {

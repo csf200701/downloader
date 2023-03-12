@@ -59,14 +59,14 @@ func (bar *Bar) load() {
 	currentShow := utils.CalcSize(bar.current)
 	totalShow := utils.CalcSize(bar.total)
 	percent := int(bar.getPercent() * 100)
-	term.SetCursor(0, bar.line)
-	term.SetFg(0, bar.line, term.ColorBlue)
+	term.SetCursor(0, bar.bc.minLine+bar.line)
+	// term.SetFg(0, bar.bc.minLine+bar.line, term.ColorBlue)
 	if bar.current == bar.total {
 		fmt.Printf("\r"+bar.prepend+": "+string(bar.left)+"%-"+strconv.Itoa(bar.bc.width)+"s"+string(bar.right)+"% 4d%%  %-10s %-18s %-18s", bar.rate, percent, bar.getTime(), currentShow+"/"+totalShow, "完成")
 	} else {
 		fmt.Printf("\r"+bar.prepend+": "+string(bar.left)+"%-"+strconv.Itoa(bar.bc.width)+"s"+string(bar.right)+"% 4d%%  %-10s %-18s %-18s", bar.rate, percent, bar.getTime(), currentShow+"/"+totalShow, "进行中（"+utils.CalcSize(int64(bar.ratePerSec))+"/s）")
 	}
-	term.SetCursor(0, bar.bc.nextLine+1)
+	term.SetCursor(0, bar.bc.minLine+bar.bc.nextLine+1)
 	// term.HideCursor()
 	term.Flush()
 }
