@@ -1,5 +1,5 @@
 <Components>
-    <Component name="openjdk">
+    <Component name="openjdk" base="">
         <Version name="19.0.1-Windows" url="https://download.java.net/java/GA/jdk19.0.1/afdd2e245b014143b62ccb916125e3ce/10/GPL/openjdk-19.0.1_windows-x64_bin.zip" />
         <Version name="19.0.1-Mac/AArch64" url="https://download.java.net/java/GA/jdk19.0.1/afdd2e245b014143b62ccb916125e3ce/10/GPL/openjdk-19.0.1_macos-aarch64_bin.tar.gz" />
         <Version name="19.0.1-Mac/x64" url="https://download.java.net/java/GA/jdk19.0.1/afdd2e245b014143b62ccb916125e3ce/10/GPL/openjdk-19.0.1_macos-x64_bin.tar.gz" />
@@ -17,7 +17,120 @@
         <Version name="18.0.2-Linux/x64" url="https://download.java.net/java/GA/jdk18.0.2/f6ad4b4450fd4d298113270ec84f30ee/9/GPL/openjdk-18.0.2_linux-x64_bin.tar.gz" />
         <Version name="18.0.1.1-Windows" url="https://download.java.net/java/GA/jdk18.0.1.1/65ae32619e2f40f3a9af3af1851d6e19/2/GPL/openjdk-18.0.1.1_windows-x64_bin.zip" />
     </Component>
-     <Component name="mysql">
-        <Version name="1.2.3" url="" />
+    <!--https://downloads.mysql.com/archives/community/-->
+     <Component name="mysql" base="https://downloads.mysql.com/archives/get/p/23/file/">
+        <Version name="8.0.31-winx64" url="mysql-8.0.31-winx64.zip" />
+        <Version name="8.0.31-linux-glibc2.12-i686" url="mysql-8.0.31-linux-glibc2.12-i686.tar.xz" />
+        <Version name="8.0.31-macos12-arm64" url="mysql-8.0.31-macos12-arm64.dmg" />
+        <Version name="8.0.30-winx64" url="mysql-8.0.30-winx64.zip" />
+        <Version name="8.0.28-winx64" url="mysql-8.0.28-winx64.zip" />
+        <Version name="8.0.27-winx64" url="mysql-8.0.27-winx64.zip" />
+        <Version name="8.0.26-winx64" url="mysql-8.0.26-winx64.zip" />
+        <Version name="8.0.25-winx64" url="mysql-8.0.25-winx64.zip" />
+        <Version name="8.0.24-winx64" url="mysql-8.0.24-winx64.zip" />
+        <Version name="8.0.23-winx64" url="mysql-8.0.23-winx64.zip" />
+        <Version name="8.0.22-winx64" url="mysql-8.0.22-winx64.zip" />
+        <Version name="8.0.21-winx64" url="mysql-8.0.21-winx64.zip" />
+        <Version name="8.0.21-linux-glibc2.12-i686" url="mysql-8.0.21-linux-glibc2.12-i686.tar.xz" />
+
+        <Version name="5.7.40-winx64" url="mysql-5.7.40-winx64.zip" />
+        <Version name="5.7.40-win32" url="mysql-5.7.40-win32.zip" />
+        <Version name="5.6.51-winx64" url="mysql-5.6.51-winx64.zip" />
+        <Version name="5.6.51-win32" url="mysql-5.6.51-winx64.zip" />
      </Component>
+     <!--https://www.eclipse.org/downloads/packages/-->
+     <Component name="eclipse" base="https://mirrors.nju.edu.cn/eclipse//technology/epp/downloads/release/">
+        <Version name="jee-2022-12-R-win32-x86_64" url="2022-12/R/eclipse-jee-2022-12-R-win32-x86_64.zip" />
+        <Version name="jee-2022-12-R-linux-gtk-x86_64" url="2022-12/R/eclipse-jee-2022-12-R-linux-gtk-x86_64.tar.gz" />
+        <Version name="jee-2022-12-R-linux-gtk-aarch64" url="2022-12/R/eclipse-jee-2022-12-R-linux-gtk-aarch64.tar.gz" />
+        <Version name="jee-2022-12-R-macosx-cocoa-x86_64" url="2022-12/R/eclipse-jee-2022-12-R-macosx-cocoa-x86_64.dmg" />
+        <Version name="jee-2022-12-R-macosx-cocoa-aarch64" url="2022-12/R/eclipse-jee-2022-12-R-macosx-cocoa-aarch64.dmg" />
+
+        <Version name="java-2022-12-R-win32-x86_64" url="2022-12/R/eclipse-java-2022-12-R-win32-x86_64.zip" />
+        <Version name="java-2022-12-R-linux-gtk-x86_64" url="2022-12/R/eclipse-java-2022-12-R-linux-gtk-x86_64.tar.gz" />
+        <Version name="java-2022-12-R-linux-gtk-aarch64" url="2022-12/R/eclipse-java-2022-12-R-linux-gtk-aarch64.tar.gz" />
+        <Version name="java-2022-12-R-macosx-cocoa-x86_64" url="2022-12/R/eclipse-java-2022-12-R-macosx-cocoa-x86_64.dmg" />
+        <Version name="java-2022-12-R-macosx-cocoa-aarch64" url="2022-12/R/eclipse-java-2022-12-R-macosx-cocoa-aarch64.dmg" />
+        
+     </Component>
+
+     <Component name="centos" base="https://mirrors.tuna.tsinghua.edu.cn/">
+         <Version name="CentOS-Stream-9-latest-x86_64-dvd1" url="centos-stream/9-stream/BaseOS/x86_64/iso/CentOS-Stream-9-latest-x86_64-dvd1.iso"/>
+         <Version name="CentOS-Stream-9-latest-aarch64-dvd1" url="centos-stream/9-stream/BaseOS/aarch64/iso/CentOS-Stream-9-latest-aarch64-dvd1.iso" />
+         <Version name="CentOS-Stream-8-20230308.3-aarch64-dvd1" url="http://ftp.sjtu.edu.cn/centos/8-stream/isos/aarch64/CentOS-Stream-8-20230308.3-aarch64-dvd1.iso" />
+         <Version name="CentOS-Stream-8-20230308.3-x86_64-dvd1" url="http://ftp.sjtu.edu.cn/centos/8-stream/isos/x86_64/CentOS-Stream-8-20230308.3-x86_64-dvd1.iso" />
+         <Version name="CentOS-7-x86_64-DVD-2009" url="http://ftp.sjtu.edu.cn/centos/7.9.2009/isos/x86_64/CentOS-7-x86_64-DVD-2009.iso" />
+         <Version name="CentOS-7-i386-Everything-2009" url="centos-altarch/7.9.2009/isos/i386/CentOS-7-i386-Everything-2009.iso" />
+         <Version name="CentOS-7-x86_64-DVD-2009" url="http://ftp.sjtu.edu.cn/centos/7.9.2009/isos/x86_64/CentOS-7-x86_64-DVD-2009.iso" />
+     </Component>
+
+     <Component name="ubuntu" base="https://releases.ubuntu.com/">
+         <Version name="ubuntu-22.10-desktop-amd64" url="kinetic/ubuntu-22.10-desktop-amd64.iso" />
+         <Version name="ubuntu-22.10-live-server-amd64" url="kinetic/ubuntu-22.10-live-server-amd64.iso" />
+         <Version name="ubuntu-18.04.6-desktop-amd64" url="bionic/ubuntu-18.04.6-desktop-amd64.iso" />
+         <Version name="ubuntu-18.04.6-live-server-amd64" url="bionic/ubuntu-18.04.6-live-server-amd64.iso" />
+         <Version name="ubuntu-20.04.5-desktop-amd64" url="focal/ubuntu-20.04.5-desktop-amd64.iso" />
+         <Version name="ubuntu-20.04.5-live-server-amd64" url="focal/ubuntu-20.04.5-live-server-amd64.iso" />
+         <Version name="ubuntu-22.04.2-desktop-amd64" url="jammy/ubuntu-22.04.2-desktop-amd64.iso" />
+         <Version name="ubuntu-22.04.2-live-server-amd64" url="jammy/ubuntu-22.04.2-live-server-amd64.iso" />
+
+         <Version name="ubuntu-16.04.7-server-amd64" url="xenial/ubuntu-16.04.7-server-amd64.iso" />
+         <Version name="ubuntu-16.04.6-desktop-i386" url="xenial/ubuntu-16.04.6-desktop-i386.iso" />
+         <Version name="ubuntu-16.04.6-server-i386" url="xenial/ubuntu-16.04.6-server-i386.iso" />
+
+         <Version name="ubuntu-14.04.6-desktop-amd64" url="trusty/ubuntu-14.04.6-desktop-amd64.iso" />
+         <Version name="ubuntu-14.04.6-server-amd64" url="trusty/ubuntu-14.04.6-server-amd64.iso" />
+         <Version name="ubuntu-14.04.6-desktop-i386" url="trusty/ubuntu-14.04.6-desktop-i386.iso" />
+         <Version name="ubuntu-14.04.6-server-i386" url="trusty/ubuntu-14.04.6-server-i386.iso" />
+     </Component>
+
+     <Component name="virtualbox" base="">
+         <Version name="7.0.4-154605-Win" url="https://download.virtualbox.org/virtualbox/7.0.4/VirtualBox-7.0.4-154605-Win.exe?source=:ow:o:p:nav:mmddyyVirtualBoxHero_cn" />
+         <Version name="7.0.4-154605-OSX" url="https://download.virtualbox.org/virtualbox/7.0.4/VirtualBox-7.0.4-154605-OSX.dmg?source=:ow:o:p:nav:mmddyyVirtualBoxHero_cn" />
+         <Version name="7.0.4_BETA4-154605-macOSArm64" url="https://download.virtualbox.org/virtualbox/7.0.4/VirtualBox-7.0.4_BETA4-154605-macOSArm64.dmg?source=:ow:o:p:nav:mmddyyVirtualBoxHero_cn" />
+         <Version name="7.0.4-154605-Solaris" url="https://download.virtualbox.org/virtualbox/7.0.4/VirtualBox-7.0.4-154605-Solaris.p5p?source=:ow:o:p:nav:mmddyyVirtualBoxHero_cn" />
+
+     </Component>
+     <Component name="virtualBox_extension_pack">
+         <Version name="7.0.4" url="https://download.virtualbox.org/virtualbox/7.0.4/Oracle_VM_VirtualBox_Extension_Pack-7.0.4.vbox-extpack?source=:ow:o:p:nav:mmddyyVirtualBoxHero_cn" />
+     </Component>
+
+     <Component name="docker" base="https://download.docker.com/linux/">
+        <Version name="win_desktop_amd64" url="https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe" />
+        <Version name="mac_desktop_amd64" url="https://desktop.docker.com/mac/main/amd64/Docker.dmg" />
+        <Version name="mac_desktop_arm64" url="https://desktop.docker.com/mac/main/arm64/Docker.dmg" />
+
+        <Version name="23.0.1_x86_64" url="static/stable/x86_64/docker-23.0.1.tgz" />
+        <Version name="20.10.23_x86_64" url="static/stable/x86_64/docker-20.10.23.tgz" />
+        <Version name="19.03.15_x86_64" url="static/stable/x86_64/docker-19.03.15.tgz" />
+        <Version name="18.09.9_x86_64" url="static/stable/x86_64/docker-18.09.9.tgz" />
+        <Version name="18.06.3-ce_x86_64" url="static/stable/x86_64/docker-18.06.3-ce.tgz" />
+        <Version name="17.12.1-ce_x86_64" url="static/stable/x86_64/docker-17.12.1-ce.tgz" />
+
+        <Version name="20.10.23_aarch64" url="static/stable/aarch64/docker-20.10.23.tgz" />
+        <Version name="19.03.15_aarch64" url="static/stable/aarch64/docker-19.03.15.tgz" />
+        <Version name="18.09.5_aarch64" url="static/stable/aarch64/docker-18.09.5.tgz" />
+        <Version name="17.09.0-ce_aarch64" url="static/stable/aarch64/docker-17.09.0-ce.tgz" />
+
+        <Version name="23.0.1_armel" url="static/stable/armel/docker-23.0.1.tgz" />
+        <Version name="20.10.23_armel" url="static/stable/armel/docker-20.10.23.tgz" />
+        <Version name="19.03.15_armel" url="static/stable/armel/docker-19.03.15.tgz" />
+        <Version name="18.09.9_armel" url="static/stable/armel/docker-18.09.9.tgz" />
+        <Version name="17.12.1-ce_armel" url="static/stable/armel/docker-17.12.1-ce.tgz" />
+
+        <Version name="18.06.3-ce_ppc64le" url="static/stable/ppc64le/docker-18.06.3-ce.tgz" />
+        <Version name="18.03.1-ce_ppc64le" url="static/stable/ppc64le/docker-18.03.1-ce.tgz" />
+        <Version name="17.12.1-ce_ppc64le" url="static/stable/ppc64le/docker-17.12.1-ce.tgz" />
+        <Version name="17.09.1-ce_ppc64le" url="static/stable/ppc64le/docker-17.09.1-ce.tgz" />
+
+        <Version name="18.06.3-ce_s390x" url="static/stable/s390x/docker-18.06.3-ce.tgz" />
+        <Version name="18.03.1-ce_s390x" url="static/stable/s390x/docker-18.03.1-ce.tgz" />
+        <Version name="17.12.1-ce_s390x" url="static/stable/s390x/docker-17.12.1-ce.tgz" />
+        <Version name="17.09.1-ce_s390x" url="static/stable/s390x/docker-17.09.1-ce.tgz" />
+        <Version name="17.06.2-ce_s390x" url="static/stable/s390x/docker-17.06.2-ce.tgz" />
+
+        <Version name="centos_20.10.15-3.el9.x86_64" url="centos/9/x86_64/stable/Packages/docker-ce-20.10.15-3.el9.x86_64.rpm" />
+     </Component>
+
+
 </Components>

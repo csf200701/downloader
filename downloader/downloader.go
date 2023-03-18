@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"net/url"
 	"os"
 	"strconv"
 	"strings"
@@ -45,6 +46,7 @@ func NewComponent(componentName string, componentVersion string, process int) (*
 		return nil, errors.New("组件不能为空")
 	}
 	var url string
+	var base string
 	c := config.C
 	for _, component := range c.Components {
 		if component.Name == componentName {
@@ -52,17 +54,28 @@ func NewComponent(componentName string, componentVersion string, process int) (*
 				for _, version := range component.Versions {
 					if version.Name == componentVersion {
 						url = version.Url
+						base = component.Base
 						break
 					}
 				}
 			} else {
 				url = component.Versions[0].Url
+				base = component.Base
 			}
 			break
 		}
 	}
 	if len(url) == 0 {
 		return nil, errors.New("获取不到组件所对应的URL地址")
+	}
+	if len(base) > 0 && strings.Index(url, strings.ToLower("https|http")) == -1 {
+		if strings.HasSuffix(base, "/") {
+			base = strings.TrimSuffix(base, "/")
+		}
+		if strings.HasSuffix(url, "/") {
+			url = strings.TrimSuffix(url, "/")
+		}
+		url = base + "/" + url
 	}
 	req := utils.NewRequest(url)
 	return &Downloader{
@@ -92,8 +105,10 @@ func (d *Downloader) Download() {
 	}
 	var partitionTotal = total / int64(d.process)
 
-	lastIdx := strings.LastIndex(d.url, "/")
-	fileName := string([]rune(d.url)[lastIdx+1:])
+	urlObj, _ := url.Parse(d.url)
+	urlPath := urlObj.Path
+	lastIdx := strings.LastIndex(urlPath, "/")
+	fileName := string([]rune(urlPath)[lastIdx+1:])
 
 	bc := bar.New(fmt.Sprintf("【%s】文件总大小：%v，分片数：%v，每个分片平均大小：%v", fileName, utils.CalcSize(total), d.process, utils.CalcSize(partitionTotal)))
 

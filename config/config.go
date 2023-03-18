@@ -13,6 +13,7 @@ type Components struct {
 }
 type Component struct {
 	Name     string    `xml:"name,attr"`
+	Base     string    `xml:"base,attr"`
 	Versions []Version `xml:"Version"`
 }
 type Version struct {

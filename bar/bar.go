@@ -61,6 +61,7 @@ func (bar *Bar) load() {
 	percent := int(bar.getPercent() * 100)
 	term.SetCursor(0, bar.bc.minLine+bar.line)
 	// term.SetFg(0, bar.bc.minLine+bar.line, term.ColorBlue)
+	term.SetBg(0, bar.bc.minLine+bar.line, term.ColorBlue)
 	if bar.current == bar.total {
 		fmt.Printf("\r"+bar.prepend+": "+string(bar.left)+"%-"+strconv.Itoa(bar.bc.width)+"s"+string(bar.right)+"% 4d%%  %-10s %-18s %-18s", bar.rate, percent, bar.getTime(), currentShow+"/"+totalShow, "完成")
 	} else {

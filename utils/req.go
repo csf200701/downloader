@@ -31,7 +31,6 @@ func (r *Request) Total() (int64, error) {
 	if err != nil {
 		return 0, err
 	}
-
 	return totalSize, nil
 }
 
