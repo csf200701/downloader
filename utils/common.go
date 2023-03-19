@@ -1,8 +1,11 @@
 package utils
 
 import (
+	"downloader/config"
+	"errors"
 	"math"
 	"strconv"
+	"strings"
 )
 
 func CalcSize(size int64) string {
@@ -40,4 +43,56 @@ func CalcSize(size int64) string {
 		unit = "BB"
 	}
 	return strconv.FormatFloat(show, 'f', 2, 64) + unit
+}
+
+func CalcProcess(dm int64) int {
+	var process int
+	if dm < 40 {
+		process = 1
+	} else if dm < 1024 {
+		process = 5
+	} else {
+		process = 10
+	}
+	return process
+}
+
+func ComponentUrl(componentName string, componentVersion string) (string, error) {
+	if len(componentName) == 0 {
+		return "", errors.New("组件不能为空")
+	}
+	var url string
+	var base string
+	c := config.C
+	for _, component := range c.Components {
+		if component.Name == componentName {
+			if len(componentVersion) > 0 {
+				for _, version := range component.Versions {
+					if version.Name == componentVersion {
+						url = version.Url
+						base = component.Base
+						break
+					}
+				}
+			} else {
+				url = component.Versions[0].Url
+				base = component.Base
+			}
+			break
+		}
+	}
+	if len(url) == 0 {
+		return "", errors.New("获取不到组件所对应的URL地址")
+	}
+	if len(base) > 0 && strings.Index(url, strings.ToLower("https|http")) == -1 {
+		if strings.HasSuffix(base, "/") {
+			base = strings.TrimSuffix(base, "/")
+		}
+		if strings.HasSuffix(url, "/") {
+			url = strings.TrimSuffix(url, "/")
+		}
+		url = base + "/" + url
+	}
+
+	return url, nil
 }

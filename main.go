@@ -2,6 +2,7 @@ package main
 
 import (
 	"downloader/config"
+	"downloader/delete"
 	"downloader/downloader"
 	"downloader/show"
 	"flag"
@@ -27,6 +28,11 @@ func main() {
 	downloadFlagSet.StringVar(&v, "v", "", "具体组件版本下载")
 	downloadFlagSet.IntVar(&p, "p", 0, "启用几个并发同步下载")
 	downloadFlagSet.StringVar(&f, "f", "", "指定外部配置文件")
+	deleteFlagSet := flag.NewFlagSet("list", flag.ExitOnError)
+	deleteFlagSet.StringVar(&v, "v", "", "指定版本")
+	deleteFlagSet.StringVar(&c, "c", "", "指定组件")
+	deleteFlagSet.StringVar(&f, "f", "", "指定外部配置文件")
+	deleteFlagSet.IntVar(&p, "p", 0, "启用几个并发同步下载")
 
 	if len(os.Args) == 1 {
 		config.Load(f)
@@ -41,6 +47,11 @@ func main() {
 		config.Load(f)
 		showList := show.NewShow(c, isV)
 		showList.Show()
+	case "delete":
+		deleteFlagSet.Parse(os.Args[2:])
+		config.Load(f)
+		delete := delete.NewDeleter(c, v, p)
+		delete.Delete()
 	case "download":
 		downloadFlagSet.Parse(os.Args[2:])
 		config.Load(f)

@@ -2,7 +2,6 @@ package downloader
 
 import (
 	"downloader/bar"
-	"downloader/config"
 	"downloader/utils"
 	"errors"
 	"fmt"
@@ -42,40 +41,9 @@ func NewUrl(url string, process int) (*Downloader, error) {
 }
 
 func NewComponent(componentName string, componentVersion string, process int) (*Downloader, error) {
-	if len(componentName) == 0 {
-		return nil, errors.New("组件不能为空")
-	}
-	var url string
-	var base string
-	c := config.C
-	for _, component := range c.Components {
-		if component.Name == componentName {
-			if len(componentVersion) > 0 {
-				for _, version := range component.Versions {
-					if version.Name == componentVersion {
-						url = version.Url
-						base = component.Base
-						break
-					}
-				}
-			} else {
-				url = component.Versions[0].Url
-				base = component.Base
-			}
-			break
-		}
-	}
-	if len(url) == 0 {
-		return nil, errors.New("获取不到组件所对应的URL地址")
-	}
-	if len(base) > 0 && strings.Index(url, strings.ToLower("https|http")) == -1 {
-		if strings.HasSuffix(base, "/") {
-			base = strings.TrimSuffix(base, "/")
-		}
-		if strings.HasSuffix(url, "/") {
-			url = strings.TrimSuffix(url, "/")
-		}
-		url = base + "/" + url
+	url, err := utils.ComponentUrl(componentName, componentVersion)
+	if err != nil {
+		return nil, err
 	}
 	req := utils.NewRequest(url)
 	return &Downloader{
@@ -94,15 +62,9 @@ func (d *Downloader) Download() {
 		return
 	}
 	total := remoteFile.Total
-	dm := total / 1024 / 1024
 	if d.process == 0 {
-		if dm < 40 {
-			d.process = 1
-		} else if dm < 1024 {
-			d.process = 5
-		} else {
-			d.process = 10
-		}
+		dm := total / 1024 / 1024
+		d.process = utils.CalcProcess(dm)
 	}
 	var partitionTotal = total / int64(d.process)
 
