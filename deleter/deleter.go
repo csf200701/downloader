@@ -1,4 +1,4 @@
-package delete
+package deleter
 
 import (
 	"downloader/utils"
@@ -159,9 +159,9 @@ func (d *Deleter) Delete() {
 		if err == nil || os.IsExist(err) {
 			err = os.Remove(prepend)
 			if err != nil {
-				fmt.Println("下载："+d.url+"，分片："+prepend+" 删除失败", "\n        错误：", err)
+				fmt.Println("下载："+fileName+"，分片："+prepend+" 删除失败", "\n        错误：", err)
 			} else {
-				fmt.Println("下载：" + d.url + "，分片：" + prepend + " 删除成功")
+				fmt.Println("下载：" + fileName + "，分片：" + prepend + " 删除成功")
 			}
 		}
 	}

@@ -2,7 +2,7 @@ package main
 
 import (
 	"downloader/config"
-	"downloader/delete"
+	"downloader/deleter"
 	"downloader/downloader"
 	"downloader/show"
 	"downloader/utils"
@@ -65,18 +65,18 @@ func main() {
 		if len(pxh) > 0 {
 			proxy = utils.NewProxy(pxh, pxu, pxp)
 		}
-		var deleter *delete.Deleter
+		var d *deleter.Deleter
 		var err error
 		if len(u) > 0 {
-			deleter, err = delete.NewUrl(u, p, proxy)
+			d, err = deleter.NewUrl(u, p, proxy)
 		} else {
-			deleter, err = delete.NewComponent(c, v, p, proxy)
+			d, err = deleter.NewComponent(c, v, p, proxy)
 		}
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
-		deleter.Delete()
+		d.Delete()
 	case "download":
 		downloadFlagSet.Parse(os.Args[2:])
 		config.Load(f)
