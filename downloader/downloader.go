@@ -14,11 +14,11 @@ import (
 )
 
 type Downloader struct {
-	url              string
-	componentName    string
-	componentVersion string
-	process          int
-	req              *utils.Request
+	url string
+	// componentName    string
+	// componentVersion string
+	process int
+	req     *utils.Request
 }
 
 type MergeFile struct {
@@ -28,11 +28,16 @@ type MergeFile struct {
 	status    int //1正常 2异常
 }
 
-func NewUrl(url string, process int) (*Downloader, error) {
+func NewUrl(url string, process int, proxy *utils.Proxy) (*Downloader, error) {
 	if len(url) == 0 {
 		return nil, errors.New("URL地址不能为空")
 	}
-	req := utils.NewRequest(url)
+	var req *utils.Request
+	if proxy == nil {
+		req = utils.NewRequest(url)
+	} else {
+		req = utils.NewProxyRequest(url, proxy)
+	}
 	return &Downloader{
 		url:     url,
 		process: process,
@@ -40,19 +45,12 @@ func NewUrl(url string, process int) (*Downloader, error) {
 	}, nil
 }
 
-func NewComponent(componentName string, componentVersion string, process int) (*Downloader, error) {
+func NewComponent(componentName string, componentVersion string, process int, proxy *utils.Proxy) (*Downloader, error) {
 	url, err := utils.ComponentUrl(componentName, componentVersion)
 	if err != nil {
 		return nil, err
 	}
-	req := utils.NewRequest(url)
-	return &Downloader{
-		url:              url,
-		componentName:    componentName,
-		componentVersion: componentVersion,
-		process:          process,
-		req:              req,
-	}, nil
+	return NewUrl(url, process, proxy)
 }
 
 func (d *Downloader) Download() {

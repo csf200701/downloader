@@ -5,6 +5,7 @@ import (
 	"downloader/delete"
 	"downloader/downloader"
 	"downloader/show"
+	"downloader/utils"
 	"flag"
 	"fmt"
 	"os"
@@ -18,6 +19,9 @@ func main() {
 	var v string
 	var p int
 	var f string
+	var pxh string
+	var pxu string
+	var pxp string
 	listFlagSet := flag.NewFlagSet("list", flag.ExitOnError)
 	listFlagSet.BoolVar(&isV, "v", false, "查看版本")
 	listFlagSet.StringVar(&c, "c", "", "查看组件")
@@ -28,11 +32,18 @@ func main() {
 	downloadFlagSet.StringVar(&v, "v", "", "具体组件版本下载")
 	downloadFlagSet.IntVar(&p, "p", 0, "启用几个并发同步下载")
 	downloadFlagSet.StringVar(&f, "f", "", "指定外部配置文件")
+	downloadFlagSet.StringVar(&pxh, "pxh", "", "使用代理请求的Host，格式：xxx.xxx.xxx.xxx:8080")
+	downloadFlagSet.StringVar(&pxu, "pxu", "", "使用代理请求的用户名")
+	downloadFlagSet.StringVar(&pxp, "pxp", "", "使用代理请求的用户密码")
 	deleteFlagSet := flag.NewFlagSet("list", flag.ExitOnError)
+	deleteFlagSet.StringVar(&u, "u", "", "指定URL下载")
 	deleteFlagSet.StringVar(&v, "v", "", "指定版本")
 	deleteFlagSet.StringVar(&c, "c", "", "指定组件")
 	deleteFlagSet.StringVar(&f, "f", "", "指定外部配置文件")
 	deleteFlagSet.IntVar(&p, "p", 0, "启用几个并发同步下载")
+	deleteFlagSet.StringVar(&pxh, "pxh", "", "使用代理请求，格式：xxx.xxx.xxx.xxx:8080")
+	deleteFlagSet.StringVar(&pxu, "pxu", "", "使用代理请求的用户名")
+	deleteFlagSet.StringVar(&pxp, "pxp", "", "使用代理请求的用户密码")
 
 	if len(os.Args) == 1 {
 		config.Load(f)
@@ -50,17 +61,35 @@ func main() {
 	case "delete":
 		deleteFlagSet.Parse(os.Args[2:])
 		config.Load(f)
-		delete := delete.NewDeleter(c, v, p)
-		delete.Delete()
+		var proxy *utils.Proxy
+		if len(pxh) > 0 {
+			proxy = utils.NewProxy(pxh, pxu, pxp)
+		}
+		var deleter *delete.Deleter
+		var err error
+		if len(u) > 0 {
+			deleter, err = delete.NewUrl(u, p, proxy)
+		} else {
+			deleter, err = delete.NewComponent(c, v, p, proxy)
+		}
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		deleter.Delete()
 	case "download":
 		downloadFlagSet.Parse(os.Args[2:])
 		config.Load(f)
+		var proxy *utils.Proxy
+		if len(pxh) > 0 {
+			proxy = utils.NewProxy(pxh, pxu, pxp)
+		}
 		var d *downloader.Downloader
 		var err error
 		if len(u) > 0 {
-			d, err = downloader.NewUrl(u, p)
+			d, err = downloader.NewUrl(u, p, proxy)
 		} else {
-			d, err = downloader.NewComponent(c, v, p)
+			d, err = downloader.NewComponent(c, v, p, proxy)
 		}
 		if err != nil {
 			fmt.Println(err)

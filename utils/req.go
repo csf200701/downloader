@@ -6,6 +6,7 @@ import (
 	"mime"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -14,19 +15,47 @@ type RemoteFileInfo struct {
 	FileName string
 }
 type Request struct {
-	url string
+	url   string
+	proxy *Proxy
+}
+
+type Proxy struct {
+	host     string
+	username string
+	password string
+}
+
+func NewProxy(host, username, password string) *Proxy {
+	return &Proxy{host, username, password}
 }
 
 func NewRequest(url string) *Request {
-	return &Request{url}
+	return &Request{url: url}
 }
 
-func (r *Request) Total() (*RemoteFileInfo, error) { //Content-Disposition: attachment; filename=Postman-win64-Setup.exe
-	totalReq, err := http.NewRequest("HEAD", r.url, nil)
-	if err != nil {
-		return nil, err
+func NewProxyRequest(url string, proxy *Proxy) *Request {
+	return &Request{url: url, proxy: proxy}
+}
+
+func (r *Request) Total() (*RemoteFileInfo, error) {
+	var totalClient *http.Client
+	var totalReq *http.Request
+	var err error
+	if r.proxy == nil {
+		totalClient = &http.Client{Timeout: time.Second * 10}
+		totalReq, err = http.NewRequest("HEAD", r.url, nil)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		var auth string
+		totalClient, auth = PorxyClient(r.proxy.host, r.proxy.username, r.proxy.password, time.Second*10)
+		totalReq, err = http.NewRequest("HEAD", r.url, strings.NewReader(auth))
+		if err != nil {
+			return nil, err
+		}
 	}
-	totalClient := http.Client{Timeout: time.Second * 10}
+
 	totalRsp, err := totalClient.Do(totalReq)
 	if err != nil {
 		return nil, err
@@ -45,28 +74,50 @@ func (r *Request) Total() (*RemoteFileInfo, error) { //Content-Disposition: atta
 			remoteFileInfo.FileName = filename
 		}
 	}
+
 	return remoteFileInfo, nil
 }
 
 func (r *Request) Total_Get() (int64, error) {
-	getReq, err := http.NewRequest("GET", r.url, nil)
+	var getClient *http.Client
+	var getReq *http.Request
+	var err error
+	if r.proxy == nil {
+		getClient = &http.Client{Timeout: time.Second * 60 * 10}
+		getReq, err = http.NewRequest("GET", r.url, nil)
+	} else {
+		var auth string
+		getClient, auth = PorxyClient(r.proxy.host, r.proxy.username, r.proxy.password, time.Second*60*10)
+		getReq, err = http.NewRequest("GET", r.url, strings.NewReader(auth))
+	}
 	getReq.Header.Set("Range", fmt.Sprintf("bytes=%d-%d", 0, 0))
-	getClient := http.Client{Timeout: time.Second * 60 * 10}
 	getRsp, err := getClient.Do(getReq)
 	if err != nil {
 		return 0, err
 	}
+
 	return getRsp.ContentLength, nil
 }
 
 func (r *Request) Content(start, end int64) (io.ReadCloser, int64, error) {
-	getReq, err := http.NewRequest("GET", r.url, nil)
+	var getClient *http.Client
+	var getReq *http.Request
+	var err error
+	if r.proxy == nil {
+		getClient = &http.Client{Timeout: time.Second * 60 * 10}
+		getReq, err = http.NewRequest("GET", r.url, nil)
+	} else {
+		var auth string
+		getClient, auth = PorxyClient(r.proxy.host, r.proxy.username, r.proxy.password, time.Second*60*10)
+		getReq, err = http.NewRequest("GET", r.url, strings.NewReader(auth))
+
+	}
+
 	getReq.Header.Set("Range", fmt.Sprintf("bytes=%d-%d", start, end))
-	getClient := http.Client{Timeout: time.Second * 60 * 10}
 	getRsp, err := getClient.Do(getReq)
 	if err != nil {
 		return nil, 0, err
 	}
-	// fmt.Println(start, end, getRsp)
+
 	return getRsp.Body, getRsp.ContentLength, nil
 }

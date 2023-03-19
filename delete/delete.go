@@ -2,6 +2,7 @@ package delete
 
 import (
 	"downloader/utils"
+	"errors"
 	"fmt"
 	netUrl "net/url"
 	"os"
@@ -10,13 +11,30 @@ import (
 )
 
 type Deleter struct {
-	component string
-	version   string
-	process   int
+	url     string
+	process int
+	req     *utils.Request
 }
 
-func NewDeleter(component string, version string, process int) *Deleter {
-	return &Deleter{component: component, version: version, process: process}
+func NewUrl(url string, process int, proxy *utils.Proxy) (*Deleter, error) {
+	if len(url) == 0 {
+		return nil, errors.New("URL地址不能为空")
+	}
+	var req *utils.Request
+	if proxy == nil {
+		req = utils.NewRequest(url)
+	} else {
+		req = utils.NewProxyRequest(url, proxy)
+	}
+	return &Deleter{url: url, process: process, req: req}, nil
+}
+
+func NewComponent(component string, version string, process int, proxy *utils.Proxy) (*Deleter, error) {
+	url, err := utils.ComponentUrl(component, version)
+	if err != nil {
+		return nil, err
+	}
+	return NewUrl(url, process, proxy)
 }
 
 func (d *Deleter) Delete() {
@@ -109,15 +127,9 @@ func (d *Deleter) Delete() {
 
 	// }
 
-	url, err := utils.ComponentUrl(d.component, d.version)
+	remoteFile, err := d.req.Total()
 	if err != nil {
-		return
-	}
-	req := utils.NewRequest(url)
-
-	remoteFile, err := req.Total()
-	if err != nil {
-		fmt.Println(d.component+"-"+d.version, "发送错误：", err)
+		fmt.Println("下载："+d.url, "发送错误：", err)
 		return
 	}
 	total := remoteFile.Total
@@ -131,7 +143,7 @@ func (d *Deleter) Delete() {
 	if len(remoteFile.FileName) > 0 {
 		fileName = remoteFile.FileName
 	} else {
-		urlObj, _ := netUrl.Parse(url)
+		urlObj, _ := netUrl.Parse(d.url)
 		urlPath := urlObj.Path
 		lastIdx := strings.LastIndex(urlPath, "/")
 		fileName = string([]rune(urlPath)[lastIdx+1:])
@@ -142,12 +154,12 @@ func (d *Deleter) Delete() {
 		if process-1 == i {
 			end = total
 		}
-		prepend := utils.Short(url + ":" + strconv.FormatInt(start, 10) + "-" + strconv.FormatInt(end, 10))
+		prepend := utils.Short(d.url + ":" + strconv.FormatInt(start, 10) + "-" + strconv.FormatInt(end, 10))
 		err = os.Remove(prepend)
 		if err != nil {
-			fmt.Println("组件："+d.component+"，分片："+prepend+" 删除失败", "\n        错误：", err)
+			fmt.Println("下载："+d.url+"，分片："+prepend+" 删除失败", "\n        错误：", err)
 		} else {
-			fmt.Println("组件：" + d.component + "，分片：" + prepend + " 删除成功")
+			fmt.Println("下载：" + d.url + "，分片：" + prepend + " 删除成功")
 		}
 	}
 

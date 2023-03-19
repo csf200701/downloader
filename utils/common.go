@@ -3,9 +3,13 @@ package utils
 import (
 	"downloader/config"
 	"errors"
+	"fmt"
 	"math"
+	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func CalcSize(size int64) string {
@@ -95,4 +99,27 @@ func ComponentUrl(componentName string, componentVersion string) (string, error)
 	}
 
 	return url, nil
+}
+
+func PorxyClient(proxyHost, proxyUsername, proxyPassword string, timeout time.Duration) (*http.Client, string) {
+	var auth string
+	if len(proxyUsername) > 0 {
+		auth += "username=" + proxyUsername
+	}
+	if len(proxyPassword) > 0 {
+		if len(auth) > 0 {
+			auth += "&"
+		}
+		auth += "password=" + proxyPassword
+	}
+	//HTTP代理
+	proxy := fmt.Sprintf("http://%s", proxyHost)
+	proxyAddress, _ := url.Parse(proxy)
+	getClient := &http.Client{
+		Timeout: timeout,
+		Transport: &http.Transport{
+			Proxy: http.ProxyURL(proxyAddress),
+		},
+	}
+	return getClient, auth
 }
