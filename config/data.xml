@@ -17,6 +17,26 @@
         <Version name="18.0.2-Linux/x64" url="https://download.java.net/java/GA/jdk18.0.2/f6ad4b4450fd4d298113270ec84f30ee/9/GPL/openjdk-18.0.2_linux-x64_bin.tar.gz" />
         <Version name="18.0.1.1-Windows" url="https://download.java.net/java/GA/jdk18.0.1.1/65ae32619e2f40f3a9af3af1851d6e19/2/GPL/openjdk-18.0.1.1_windows-x64_bin.zip" />
     </Component>
+
+     <Component name="apache-maven" base="https://dlcdn.apache.org/maven/">
+        <Version name="3.9.1-bin.tar" url="maven-3/3.9.1/binaries/apache-maven-3.9.1-bin.tar.gz" />
+        <Version name="3.9.1-bin" url="maven-3/3.9.1/binaries/apache-maven-3.9.1-bin.zip" />
+        <Version name="3.8.8-bin.tar" url="maven-3/3.8.8/binaries/apache-maven-3.8.8-bin.tar.gz" />
+        <Version name="3.8.8-bin" url="maven-3/3.9.1/binaries/apache-maven-3.8.8-bin.zip" />
+     </Component>
+
+     <Component name="gradle" base="https://downloads.gradle-dn.com/distributions/">
+      <Version name="8.0.2-bin.zip" url="gradle-8.0.2-bin.zip" />
+      <Version name="8.0.2-all.zip" url="gradle-8.0.2-all.zip" />
+      <Version name="7.6.1-bin.zip" url="gradle-7.6.1-bin.zip" />
+      <Version name="7.6.1-all.zip" url="gradle-7.6.1-all.zip" />
+      <Version name="6.9.4-bin.zip" url="gradle-6.9.4-bin.zip" />
+      <Version name="6.9.4-all.zip" url="gradle-6.9.4-all.zip" />
+      <Version name="8.0.1-bin.zip" url="gradle-8.0.1-bin.zip" />
+      <Version name="8.0.1-all.zip" url="gradle-8.0.1-all.zip" />
+     </Component>
+
+
     <!--https://downloads.mysql.com/archives/community/-->
      <Component name="mysql" base="https://downloads.mysql.com/archives/get/p/23/file/">
         <Version name="8.0.31-winx64" url="mysql-8.0.31-winx64.zip" />
@@ -84,11 +104,11 @@
          <Version name="ubuntu-14.04.6-server-i386" url="trusty/ubuntu-14.04.6-server-i386.iso" />
      </Component>
 
-     <Component name="virtualbox" base="">
-         <Version name="7.0.4-154605-Win" url="https://download.virtualbox.org/virtualbox/7.0.4/VirtualBox-7.0.4-154605-Win.exe?source=:ow:o:p:nav:mmddyyVirtualBoxHero_cn" />
-         <Version name="7.0.4-154605-OSX" url="https://download.virtualbox.org/virtualbox/7.0.4/VirtualBox-7.0.4-154605-OSX.dmg?source=:ow:o:p:nav:mmddyyVirtualBoxHero_cn" />
-         <Version name="7.0.4_BETA4-154605-macOSArm64" url="https://download.virtualbox.org/virtualbox/7.0.4/VirtualBox-7.0.4_BETA4-154605-macOSArm64.dmg?source=:ow:o:p:nav:mmddyyVirtualBoxHero_cn" />
-         <Version name="7.0.4-154605-Solaris" url="https://download.virtualbox.org/virtualbox/7.0.4/VirtualBox-7.0.4-154605-Solaris.p5p?source=:ow:o:p:nav:mmddyyVirtualBoxHero_cn" />
+     <Component name="virtualbox" base="https://download.virtualbox.org/virtualbox/">
+         <Version name="7.0.4-154605-Win" url="7.0.4/VirtualBox-7.0.4-154605-Win.exe?source=:ow:o:p:nav:mmddyyVirtualBoxHero_cn" />
+         <Version name="7.0.4-154605-OSX" url="7.0.4/VirtualBox-7.0.4-154605-OSX.dmg?source=:ow:o:p:nav:mmddyyVirtualBoxHero_cn" />
+         <Version name="7.0.4_BETA4-154605-macOSArm64" url="7.0.4/VirtualBox-7.0.4_BETA4-154605-macOSArm64.dmg?source=:ow:o:p:nav:mmddyyVirtualBoxHero_cn" />
+         <Version name="7.0.4-154605-Solaris" url="7.0.4/VirtualBox-7.0.4-154605-Solaris.p5p?source=:ow:o:p:nav:mmddyyVirtualBoxHero_cn" />
 
      </Component>
      <Component name="virtualBox_extension_pack">
@@ -132,5 +152,116 @@
         <Version name="centos_20.10.15-3.el9.x86_64" url="centos/9/x86_64/stable/Packages/docker-ce-20.10.15-3.el9.x86_64.rpm" />
      </Component>
 
+     <Component name="vscode" base="https://az764295.vo.msecnd.net/stable/ee2b180d582a7f601fa6ecfdad8d9fd269ab1884/">
+        <Version name="win32-x64-1.76.2" url="VSCode-win32-x64-1.76.2.zip" />
+        <Version name="win32-ia32-1.76.2" url="VSCode-win32-ia32-1.76.2.zip" />
+        <Version name="win32-arm64-1.76.2" url="VSCode-win32-arm64-1.76.2.zip" />
+        <Version name="linux-x64" url="code-stable-x64-1678818101.tar.gz" />
+        <Version name="linux-armhf" url="code-stable-armhf-1678816990.tar.gz" />
+        <Version name="linux-arm64" url="code-stable-arm64-1678817734.tar.gz" />
+        <Version name="darwin-universal" url="VSCode-darwin-universal.zip" />
+        <Version name="darwin-arm64" url="VSCode-darwin-arm64.zip" />
+        <Version name="darwin" url="VSCode-darwin.zip" />
+     </Component>
+
+     <Component name="flutter" base="https://storage.googleapis.com/flutter_infra_release/releases/stable/">
+        <Version name="windows_3.7.7-stable" url="windows/flutter_windows_3.7.7-stable.zip" />
+        <Version name="macos_3.7.7-stable" url="macos/flutter_macos_3.7.7-stable.zip" />
+        <Version name="macos_arm64_3.7.7-stable" url="macos/flutter_macos_arm64_3.7.7-stable.zip" />
+        <Version name="linux_3.7.7-stable" url="linux/flutter_linux_3.7.7-stable.tar.xz" />
+     </Component>
+
+     <Component name="android-studio">
+        <Version name="windows-2022.1.1.21_exe" url="https://r4---sn-j5o76n7z.gvt1.com/edgedl/android/studio/install/2022.1.1.21/android-studio-2022.1.1.21-windows.exe" />
+        <Version name="windows-2022.1.1.21_zip" url="https://r1---sn-j5o76n7s.gvt1.com/edgedl/android/studio/ide-zips/2022.1.1.21/android-studio-2022.1.1.21-windows.zip" />
+        <Version name="mac-2022.1.1.21" url="https://r1---sn-j5o76n7z.gvt1.com/edgedl/android/studio/install/2022.1.1.21/android-studio-2022.1.1.21-mac.dmg" />
+        <Version name="mac_arm-2022.1.1.21" url="https://r1---sn-j5o76n7z.gvt1.com/edgedl/android/studio/install/2022.1.1.21/android-studio-2022.1.1.21-mac_arm.dmg" />
+
+        <Version name="linux-2022.1.1.21" url="https://r2---sn-j5o76n7z.gvt1.com/edgedl/android/studio/ide-zips/2022.1.1.21/android-studio-2022.1.1.21-linux.tar.gz" />
+        <Version name="cros.deb-2022.1.1.21" url="https://r3---sn-j5o7dn7z.gvt1.com/edgedl/android/studio/install/2022.1.1.21/android-studio-2022.1.1.21-cros.deb" />
+     </Component>
+
+     <Component name="idea" base="https://download.jetbrains.com.cn/idea">
+        <Version name="ideaIU-2022.3.3.exe" url="ideaIU-2022.3.3.exe" />
+        <Version name="ideaIU-2022.3.3.win.zip" url="ideaIU-2022.3.3.win.zip" />
+        <Version name="ideaIU-2022.3.3-aarch64.exe" url="ideaIU-2022.3.3-aarch64.exe" />
+        <Version name="ideaIC-2022.3.3.exe" url="ideaIC-2022.3.3.exe" />
+        <Version name="ideaIC-2022.3.3.win.zip" url="ideaIC-2022.3.3.win.zip" />
+        <Version name="ideaIC-2022.3.3-aarch64.exe" url="ideaIC-2022.3.3-aarch64.exe" />
+
+        <Version name="ideaIU-2022.3.3.dmg" url="ideaIU-2022.3.3.dmg" />
+        <Version name="ideaIU-2022.3.3-aarch64.dmg" url="ideaIU-2022.3.3-aarch64.dmg" />
+        <Version name="ideaIC-2022.3.3.dmg" url="ideaIC-2022.3.3.dmg" />
+        <Version name="ideaIC-2022.3.3-aarch64.dmg" url="ideaIC-2022.3.3-aarch64.dmg" />
+
+        <Version name="ideaIU-2022.3.3.tar.gz" url="ideaIU-2022.3.3.tar.gz" />
+        <Version name="ideaIU-2022.3.3-aarch64.tar.gz" url="ideaIU-2022.3.3-aarch64.tar.gz" />
+        <Version name="ideaIC-2022.3.3.tar.gz" url="ideaIC-2022.3.3.tar.gz" />
+        <Version name="ideaIC-2022.3.3-aarch64.tar.gz" url="ideaIC-2022.3.3-aarch64.tar.gz" />
+     </Component>
+
+     <Component name="node" base="https://nodejs.org/dist/">
+        <Version name="v18.15.0-win-x86.zip" url="v18.15.0/node-v18.15.0-win-x86.zip" />
+        <Version name="v18.15.0-win-x64.zip" url="v18.15.0/node-v18.15.0-win-x64.zip" />
+        <Version name="v18.15.0-x86.msi" url="v18.15.0/node-v18.15.0-x86.msi" />
+        <Version name="v18.15.0-x64.msi" url="v18.15.0/node-v18.15.0-x64.msi" />
+        <Version name="v18.15.0.pkg" url="v18.15.0/node-v18.15.0.pkg" />
+        <Version name="v18.15.0-darwin-x64.tar.gz" url="v18.15.0/node-v18.15.0-darwin-x64.tar.gz" />
+        <Version name="v18.15.0-darwin-arm64.tar.gz" url="v18.15.0/node-v18.15.0-darwin-arm64.tar.gz" />
+        <Version name="v18.15.0-linux-x64.tar.xz" url="v18.15.0/node-v18.15.0-linux-x64.tar.xz" />
+        <Version name="v18.15.0-linux-armv7l.tar.xz" url="v18.15.0/node-v18.15.0-linux-armv7l.tar.xz" />
+        <Version name="v18.15.0-linux-arm64.tar.xz" url="v18.15.0/node-v18.15.0-linux-arm64.tar.xz" />
+
+        <Version name="v19.8.1-win-x86.zip" url="v19.8.1/node-v19.8.1-win-x86.zip" />
+        <Version name="v19.8.1-win-x64.zip" url="v19.8.1/node-v19.8.1-win-x64.zip" />
+        <Version name="v19.8.1-x86.msi" url="v19.8.1/node-v19.8.1-x86.msi" />
+        <Version name="v19.8.1-x64.msi" url="v19.8.1/node-v19.8.1-x64.msi" />
+        <Version name="v19.8.1.pkg" url="v19.8.1/node-v19.8.1.pkg" />
+        <Version name="v19.8.1-darwin-x64.tar.gz" url="v19.8.1/node-v19.8.1-darwin-x64.tar.gz" />
+        <Version name="v19.8.1-darwin-arm64.tar.gz" url="v19.8.1/node-v19.8.1-darwin-arm64.tar.gz" />
+        <Version name="v19.8.1-linux-x64.tar.xz" url="v19.8.1/node-v19.8.1-linux-x64.tar.xz" />
+        <Version name="v19.8.1-linux-armv7l.tar.xz" url="v19.8.1/node-v19.8.1-linux-armv7l.tar.xz" />
+        <Version name="v19.8.1-linux-arm64.tar.xz" url="v19.8.1/node-v19.8.1-linux-arm64.tar.xz" />
+     </Component>
+
+     <Component name="postman" base="https://dl.pstmn.io/download/">
+        <Version name="win64-latest" url="latest/win64" />
+        <Version name="osx_64-latest" url="latest/osx_64" />
+        <Version name="osx_arm64-latest" url="latest/osx_arm64" />
+        <Version name="linux_64-latest" url="latest/linux_64" />
+        <Version name="linux_arm64-latest" url="latest/linux_arm64" />
+     </Component>
+
+
+     <Component name="mingw-w64" base="https://nchc.dl.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/">
+        <Version name="v10.0.0.zip" url="mingw-w64-v10.0.0.zip" />
+        <Version name="v10.0.0.tar.bz2" url="mingw-w64-v10.0.0.tar.bz2" />
+        <Version name="v9.0.0.zip" url="mingw-w64-v9.0.0.zip" />
+        <Version name="v9.0.0.tar.bz2" url="mingw-w64-v9.0.0.tar.bz2" />
+        <Version name="v8.0.2.zip" url="mingw-w64-v8.0.2.zip" />
+        <Version name="v8.0.2.tar.bz2" url="mingw-w64-v8.0.2.tar.bz2" />
+        <Version name="v8.0.0.zip" url="mingw-w64-v8.0.0.zip" />
+        <Version name="v8.0.0.tar.bz2" url="mingw-w64-v8.0.0.tar.bz2" />
+        <Version name="v7.0.0.zip" url="mingw-w64-v7.0.0.zip" />
+        <Version name="v7.0.0.tar.bz2" url="mingw-w64-v7.0.0.tar.bz2" />
+     </Component>
+
+     <Component name="go" base="https://go.dev/dl/">
+        <Version name="1.20.2.windows-386.msi" url="go1.20.2.windows-386.msi" />
+        <Version name="1.20.2.windows-386.zip" url="go1.20.2.windows-386.zip" />
+        <Version name="1.20.2.windows-amd64.msi" url="go1.20.2.windows-amd64.msi" />
+        <Version name="1.20.2.windows-amd64.zip" url="go1.20.2.windows-amd64.zip" />
+        <Version name="1.20.2.windows-arm64.msi" url="go1.20.2.windows-arm64.msi" />
+        <Version name="1.20.2.windows-arm64.zip" url="go1.20.2.windows-arm64.zip" />
+        <Version name="1.20.2.linux-386.tar.gz" url="go1.20.2.linux-386.tar.gz" />
+        <Version name="1.20.2.linux-amd64.tar.gz" url="go1.20.2.linux-amd64.tar.gz" />
+        <Version name="1.20.2.linux-arm64.tar.gz" url="go1.20.2.linux-arm64.tar.gz" />
+        <Version name="1.20.2.linux-armv6l.tar.gz" url="go1.20.2.linux-armv6l.tar.gz" />
+        <Version name="1.20.2.darwin-amd64.tar.gz" url="go1.20.2.darwin-amd64.tar.gz" />
+        <Version name="1.20.2.darwin-amd64.pkg" url="go1.20.2.darwin-amd64.pkg" />
+        <Version name="1.20.2.darwin-arm64.tar.gz" url="go1.20.2.darwin-arm64.tar.gz" />
+        <Version name="1.20.2.darwin-arm64.pkg" url="go1.20.2.darwin-arm64.pkg" />
+
+     </Component>
 
 </Components>

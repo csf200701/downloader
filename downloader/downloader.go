@@ -88,11 +88,12 @@ func NewComponent(componentName string, componentVersion string, process int) (*
 }
 
 func (d *Downloader) Download() {
-	total, err := d.req.Total()
+	remoteFile, err := d.req.Total()
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
+	total := remoteFile.Total
 	dm := total / 1024 / 1024
 	if d.process == 0 {
 		if dm < 40 {
@@ -105,10 +106,15 @@ func (d *Downloader) Download() {
 	}
 	var partitionTotal = total / int64(d.process)
 
-	urlObj, _ := url.Parse(d.url)
-	urlPath := urlObj.Path
-	lastIdx := strings.LastIndex(urlPath, "/")
-	fileName := string([]rune(urlPath)[lastIdx+1:])
+	var fileName string
+	if len(remoteFile.FileName) > 0 {
+		fileName = remoteFile.FileName
+	} else {
+		urlObj, _ := url.Parse(d.url)
+		urlPath := urlObj.Path
+		lastIdx := strings.LastIndex(urlPath, "/")
+		fileName = string([]rune(urlPath)[lastIdx+1:])
+	}
 
 	bc := bar.New(fmt.Sprintf("【%s】文件总大小：%v，分片数：%v，每个分片平均大小：%v", fileName, utils.CalcSize(total), d.process, utils.CalcSize(partitionTotal)))
 

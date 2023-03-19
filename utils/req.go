@@ -3,11 +3,16 @@ package utils
 import (
 	"fmt"
 	"io"
+	"mime"
 	"net/http"
 	"strconv"
 	"time"
 )
 
+type RemoteFileInfo struct {
+	Total    int64
+	FileName string
+}
 type Request struct {
 	url string
 }
@@ -16,22 +21,31 @@ func NewRequest(url string) *Request {
 	return &Request{url}
 }
 
-func (r *Request) Total() (int64, error) {
+func (r *Request) Total() (*RemoteFileInfo, error) { //Content-Disposition: attachment; filename=Postman-win64-Setup.exe
 	totalReq, err := http.NewRequest("HEAD", r.url, nil)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 	totalClient := http.Client{Timeout: time.Second * 10}
 	totalRsp, err := totalClient.Do(totalReq)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 	defer totalRsp.Body.Close()
 	totalSize, err := strconv.ParseInt(totalRsp.Header.Get("Content-Length"), 10, 64)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
-	return totalSize, nil
+	remoteFileInfo := &RemoteFileInfo{Total: totalSize}
+	contentDisposition := totalRsp.Header.Get("Content-Disposition")
+	if len(contentDisposition) > 0 {
+		_, params, err := mime.ParseMediaType(contentDisposition)
+		if err == nil {
+			filename := params["filename"]
+			remoteFileInfo.FileName = filename
+		}
+	}
+	return remoteFileInfo, nil
 }
 
 func (r *Request) Total_Get() (int64, error) {
