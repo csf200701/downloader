@@ -155,11 +155,14 @@ func (d *Deleter) Delete() {
 			end = total
 		}
 		prepend := utils.Short(d.url + ":" + strconv.FormatInt(start, 10) + "-" + strconv.FormatInt(end, 10))
-		err = os.Remove(prepend)
-		if err != nil {
-			fmt.Println("下载："+d.url+"，分片："+prepend+" 删除失败", "\n        错误：", err)
-		} else {
-			fmt.Println("下载：" + d.url + "，分片：" + prepend + " 删除成功")
+		_, err = os.Stat(prepend)
+		if err == nil || os.IsExist(err) {
+			err = os.Remove(prepend)
+			if err != nil {
+				fmt.Println("下载："+d.url+"，分片："+prepend+" 删除失败", "\n        错误：", err)
+			} else {
+				fmt.Println("下载：" + d.url + "，分片：" + prepend + " 删除成功")
+			}
 		}
 	}
 
