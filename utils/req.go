@@ -49,7 +49,7 @@ func (r *Request) Total() (*RemoteFileInfo, error) {
 		}
 	} else {
 		var auth string
-		totalClient, auth = PorxyClient(r.proxy.host, r.proxy.username, r.proxy.password, time.Second*10)
+		totalClient, auth = PorxyClient(r.proxy.host, r.proxy.username, r.proxy.password, time.Second*60)
 		totalReq, err = http.NewRequest("HEAD", r.url, strings.NewReader(auth))
 		if err != nil {
 			return nil, err
