@@ -61,12 +61,13 @@ func CalcProcess(dm int64) int {
 	return process
 }
 
-func ComponentUrl(componentName string, componentVersion string) (string, error) {
+func ComponentUrl(componentName string, componentVersion string) (string, *config.Component, error) {
 	if len(componentName) == 0 {
-		return "", errors.New("组件不能为空")
+		return "", nil, errors.New("组件不能为空")
 	}
 	var url string
 	var base string
+	var comp *config.Component
 	c := config.C
 	for _, component := range c.Components {
 		if component.Name == componentName {
@@ -75,18 +76,20 @@ func ComponentUrl(componentName string, componentVersion string) (string, error)
 					if version.Name == componentVersion {
 						url = version.Url
 						base = component.Base
+						comp = &component
 						break
 					}
 				}
 			} else {
 				url = component.Versions[0].Url
 				base = component.Base
+				comp = &component
 			}
 			break
 		}
 	}
 	if len(url) == 0 {
-		return "", errors.New("获取不到组件所对应的URL地址")
+		return "", nil, errors.New("获取不到组件所对应的URL地址")
 	}
 	if len(base) > 0 && strings.Index(url, strings.ToLower("https|http")) == -1 {
 		if strings.HasSuffix(base, "/") {
@@ -98,7 +101,7 @@ func ComponentUrl(componentName string, componentVersion string) (string, error)
 		url = base + "/" + url
 	}
 
-	return url, nil
+	return url, comp, nil
 }
 
 func PorxyClient(proxyHost, proxyUsername, proxyPassword string, timeout time.Duration) (*http.Client, string) {

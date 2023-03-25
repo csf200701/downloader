@@ -16,7 +16,7 @@ type Deleter struct {
 	req     *utils.Request
 }
 
-func NewUrl(url string, process int, proxy *utils.Proxy) (*Deleter, error) {
+func newUrl(url string, process int, proxy *utils.Proxy) (*Deleter, error) {
 	if len(url) == 0 {
 		return nil, errors.New("URL地址不能为空")
 	}
@@ -29,12 +29,53 @@ func NewUrl(url string, process int, proxy *utils.Proxy) (*Deleter, error) {
 	return &Deleter{url: url, process: process, req: req}, nil
 }
 
-func NewComponent(component string, version string, process int, proxy *utils.Proxy) (*Deleter, error) {
-	url, err := utils.ComponentUrl(component, version)
+func NewUrl(url string, process int) (*Deleter, error) {
+	if len(url) == 0 {
+		return nil, errors.New("URL地址不能为空")
+	}
+	return newUrl(url, process, nil)
+}
+
+func NewUrlWithProxy(url string, process int, proxyHost, proxyUserName, proxyUserPwd string, isProxy bool) (*Deleter, error) {
+	if len(url) == 0 {
+		return nil, errors.New("URL地址不能为空")
+	}
+	var proxy *utils.Proxy
+	if len(proxyHost) > 0 {
+		proxy = utils.NewProxy(proxyHost, proxyUserName, proxyUserPwd)
+	} else if isProxy {
+		proxyHost, err := utils.ProxyIp()
+		if err == nil {
+			proxy = utils.NewProxy(proxyHost, proxyUserName, proxyUserPwd)
+		}
+	}
+
+	return newUrl(url, process, proxy)
+}
+
+func NewComponent(componentName string, componentVersion string, process int) (*Deleter, error) {
+	url, _, err := utils.ComponentUrl(componentName, componentVersion)
 	if err != nil {
 		return nil, err
 	}
-	return NewUrl(url, process, proxy)
+	return newUrl(url, process, nil)
+}
+
+func NewComponentWithProxy(componentName string, componentVersion string, process int, proxyHost, proxyUserName, proxyUserPwd string, isProxy bool) (*Deleter, error) {
+	url, component, err := utils.ComponentUrl(componentName, componentVersion)
+	if err != nil {
+		return nil, err
+	}
+	var proxy *utils.Proxy
+	if len(proxyHost) > 0 {
+		proxy = utils.NewProxy(proxyHost, proxyUserName, proxyUserPwd)
+	} else if isProxy || component.IsProxy == 1 {
+		proxyHost, err = utils.ProxyIp()
+		if err == nil {
+			proxy = utils.NewProxy(proxyHost, proxyUserName, proxyUserPwd)
+		}
+	}
+	return newUrl(url, process, proxy)
 }
 
 func (d *Deleter) Delete() {
