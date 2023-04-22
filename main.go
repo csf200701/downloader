@@ -22,6 +22,7 @@ func main() {
 	var c string
 	var v string
 	var p int
+	var t int
 	var f string
 	var px bool
 	var pxh string
@@ -36,6 +37,7 @@ func main() {
 	downloadFlagSet.StringVar(&c, "c", "", "组件下载")
 	downloadFlagSet.StringVar(&v, "v", "", "具体组件版本下载")
 	downloadFlagSet.IntVar(&p, "p", 0, "启用几个并发同步下载")
+	downloadFlagSet.IntVar(&t, "t", 60*40, "超时时间（s）")
 	downloadFlagSet.StringVar(&f, "f", "", "指定外部配置文件")
 	downloadFlagSet.BoolVar(&px, "px", false, "是否使用代理请求")
 	downloadFlagSet.StringVar(&pxh, "pxh", "", "使用代理请求的Host，格式：xxx.xxx.xxx.xxx:8080")
@@ -47,6 +49,7 @@ func main() {
 	deleteFlagSet.StringVar(&c, "c", "", "指定组件")
 	deleteFlagSet.StringVar(&f, "f", "", "指定外部配置文件")
 	deleteFlagSet.IntVar(&p, "p", 0, "启用几个并发同步下载")
+	deleteFlagSet.IntVar(&t, "t", 60*40, "超时时间（s）")
 	deleteFlagSet.BoolVar(&px, "px", false, "是否使用代理请求")
 	deleteFlagSet.StringVar(&pxh, "pxh", "", "使用代理请求，格式：xxx.xxx.xxx.xxx:8080")
 	deleteFlagSet.StringVar(&pxu, "pxu", "", "使用代理请求的用户名")
@@ -71,9 +74,9 @@ func main() {
 		var d *deleter.Deleter
 		var err error
 		if len(u) > 0 {
-			d, err = deleter.NewUrlWithProxy(u, p, pxh, pxu, pxp, px)
+			d, err = deleter.NewUrlWithProxy(u, p, t, pxh, pxu, pxp, px)
 		} else {
-			d, err = deleter.NewComponentWithProxy(c, v, p, pxh, pxu, pxp, px)
+			d, err = deleter.NewComponentWithProxy(c, v, p, t, pxh, pxu, pxp, px)
 		}
 		if err != nil {
 			fmt.Println(err)
@@ -86,9 +89,9 @@ func main() {
 		var d *downloader.Downloader
 		var err error
 		if len(u) > 0 {
-			d, err = downloader.NewUrlWithProxy(u, p, pxh, pxu, pxp, px)
+			d, err = downloader.NewUrlWithProxy(u, p, t, pxh, pxu, pxp, px)
 		} else {
-			d, err = downloader.NewComponentWithProxy(c, v, p, pxh, pxu, pxp, px)
+			d, err = downloader.NewComponentWithProxy(c, v, p, t, pxh, pxu, pxp, px)
 		}
 		if err != nil {
 			fmt.Println(err)

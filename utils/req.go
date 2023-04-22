@@ -15,8 +15,9 @@ type RemoteFileInfo struct {
 	FileName string
 }
 type Request struct {
-	url   string
-	proxy *Proxy
+	url     string
+	timeOut int
+	proxy   *Proxy
 }
 
 type Proxy struct {
@@ -29,12 +30,12 @@ func NewProxy(host, username, password string) *Proxy {
 	return &Proxy{host, username, password}
 }
 
-func NewRequest(url string) *Request {
-	return &Request{url: url}
+func NewRequest(url string, timeOut int) *Request {
+	return &Request{url: url, timeOut: timeOut}
 }
 
-func NewProxyRequest(url string, proxy *Proxy) *Request {
-	return &Request{url: url, proxy: proxy}
+func NewProxyRequest(url string, timeOut int, proxy *Proxy) *Request {
+	return &Request{url: url, timeOut: timeOut, proxy: proxy}
 }
 
 func (r *Request) Total() (*RemoteFileInfo, error) {
@@ -104,11 +105,11 @@ func (r *Request) Content(start, end int64) (io.ReadCloser, int64, error) {
 	var getReq *http.Request
 	var err error
 	if r.proxy == nil {
-		getClient = &http.Client{Timeout: time.Second * 60 * 10}
+		getClient = &http.Client{Timeout: time.Second * time.Duration(r.timeOut)}
 		getReq, err = http.NewRequest("GET", r.url, nil)
 	} else {
 		var auth string
-		getClient, auth = PorxyClient(r.proxy.host, r.proxy.username, r.proxy.password, time.Second*60*10)
+		getClient, auth = PorxyClient(r.proxy.host, r.proxy.username, r.proxy.password, time.Second*60*40)
 		getReq, err = http.NewRequest("GET", r.url, strings.NewReader(auth))
 
 	}

@@ -28,15 +28,15 @@ type MergeFile struct {
 	status    int //1正常 2异常
 }
 
-func newUrl(url string, process int, proxy *utils.Proxy) (*Downloader, error) {
+func newUrl(url string, process, timeOut int, proxy *utils.Proxy) (*Downloader, error) {
 	if len(url) == 0 {
 		return nil, errors.New("URL地址不能为空")
 	}
 	var req *utils.Request
 	if proxy == nil {
-		req = utils.NewRequest(url)
+		req = utils.NewRequest(url, timeOut)
 	} else {
-		req = utils.NewProxyRequest(url, proxy)
+		req = utils.NewProxyRequest(url, timeOut, proxy)
 	}
 	return &Downloader{
 		url:     url,
@@ -45,14 +45,14 @@ func newUrl(url string, process int, proxy *utils.Proxy) (*Downloader, error) {
 	}, nil
 }
 
-func NewUrl(url string, process int) (*Downloader, error) {
+func NewUrl(url string, process int, timeOut int) (*Downloader, error) {
 	if len(url) == 0 {
 		return nil, errors.New("URL地址不能为空")
 	}
-	return newUrl(url, process, nil)
+	return newUrl(url, process, timeOut, nil)
 }
 
-func NewUrlWithProxy(url string, process int, proxyHost, proxyUserName, proxyUserPwd string, isProxy bool) (*Downloader, error) {
+func NewUrlWithProxy(url string, process int, timeOut int, proxyHost, proxyUserName, proxyUserPwd string, isProxy bool) (*Downloader, error) {
 	if len(url) == 0 {
 		return nil, errors.New("URL地址不能为空")
 	}
@@ -66,18 +66,18 @@ func NewUrlWithProxy(url string, process int, proxyHost, proxyUserName, proxyUse
 		}
 	}
 
-	return newUrl(url, process, proxy)
+	return newUrl(url, process, timeOut, proxy)
 }
 
-func NewComponent(componentName string, componentVersion string, process int) (*Downloader, error) {
+func NewComponent(componentName string, componentVersion string, process int, timeOut int) (*Downloader, error) {
 	url, _, err := utils.ComponentUrl(componentName, componentVersion)
 	if err != nil {
 		return nil, err
 	}
-	return newUrl(url, process, nil)
+	return newUrl(url, process, timeOut, nil)
 }
 
-func NewComponentWithProxy(componentName string, componentVersion string, process int, proxyHost, proxyUserName, proxyUserPwd string, isProxy bool) (*Downloader, error) {
+func NewComponentWithProxy(componentName string, componentVersion string, process int, timeOut int, proxyHost, proxyUserName, proxyUserPwd string, isProxy bool) (*Downloader, error) {
 	url, component, err := utils.ComponentUrl(componentName, componentVersion)
 	if err != nil {
 		return nil, err
@@ -91,7 +91,7 @@ func NewComponentWithProxy(componentName string, componentVersion string, proces
 			proxy = utils.NewProxy(proxyHost, proxyUserName, proxyUserPwd)
 		}
 	}
-	return newUrl(url, process, proxy)
+	return newUrl(url, process, timeOut, proxy)
 }
 
 func (d *Downloader) Download() {
